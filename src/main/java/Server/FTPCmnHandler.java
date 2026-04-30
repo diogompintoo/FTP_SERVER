@@ -28,6 +28,9 @@ public class FTPCmnHandler {
                 listFiles();
                 break;
 
+            case MKDIR:
+                createDir(args);
+                break;
         }
     }
 
@@ -51,6 +54,18 @@ public class FTPCmnHandler {
             for(String fileName : fileNames){
                 System.out.println(fileName);
             }
+        }
+    }
+
+    private void createDir(String dirName){
+        if (dirName == null || dirName.trim().isEmpty()){
+            System.out.println("No directory name provided.");
+            return;
+        }
+        if (fileManager.createDirectory(dirName)){
+            System.out.println("Directory " + dirName + " created.");
+        }else{
+            System.out.println("Directory " + dirName + " could not be created.");
         }
     }
 
