@@ -2,9 +2,7 @@ package Utility;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 
 
 public class FileManager {
@@ -20,21 +18,45 @@ public class FileManager {
         try {
             Files.createDirectories(rootPath);
         } catch (IOException e) {
+            System.out.println("Error creating root directory");
         }
     }
 
-    public Path getRootPath() {
-        return rootPath;
+    public Path getRootPath(String name) {
+        if (name == null || name.trim().isEmpty()){
+            return rootPath;
+        }
+        return rootPath.resolve(name);
     }
 
     public boolean createDirectory(String dirName) {
-        if (dirName == null || dirName.trim().isEmpty()) return false;
-        Path newDir = rootPath.resolve(dirName.trim());
-        return newDir.toFile().mkdir();
+        if (dirName == null || dirName.trim().isEmpty()) {
+            return false;
+        }
+        Path newDir = getRootPath(dirName);
+        try {
+            Files.createDirectories(newDir);
+            return true;
+        } catch (IOException e) {
+            System.out.println("Error creating directory");
+            return false;
+        }
     }
 
     public File[] listFiles() {
         return rootPath.toFile().listFiles();
+    }
+    public String[] listFileNames() {
+        File[] files = listFiles();
+
+        if (files == null || files.length == 0) {
+            return new String[0];
+        }
+        String[] names = new String[files.length];
+        for (int i = 0; i < files.length; i++) {
+            names[i] = files[i].getName();
+        }
+        return names;
     }
 
     public boolean fileExists(String fileName) {
