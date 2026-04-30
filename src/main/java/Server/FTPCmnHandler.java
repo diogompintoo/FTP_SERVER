@@ -43,6 +43,16 @@ public class FTPCmnHandler {
     }
 
     private void listFiles(){
+        String [] fileNames = fileManager.listFileNames();
 
+        if (fileNames.length == 0){
+            System.out.println("Sorry, no files found.");
+        }else{
+            for(String fileName : fileNames){
+                System.out.println(fileName);
+            }
+        }
     }
+
+
 }
