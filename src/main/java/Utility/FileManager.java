@@ -22,7 +22,7 @@ public class FileManager {
         }
     }
 
-    public Path getRootPath(String name) {
+    public Path getPath(String name) {
         if (name == null || name.trim().isEmpty()){
             return rootPath;
         }
@@ -33,7 +33,7 @@ public class FileManager {
         if (dirName == null || dirName.trim().isEmpty()) {
             return false;
         }
-        Path newDir = getRootPath(dirName);
+        Path newDir = getPath(dirName);
         try {
             Files.createDirectories(newDir);
             return true;
@@ -59,12 +59,20 @@ public class FileManager {
         return names;
     }
 
-    public boolean fileExists(String fileName) {
-        return Files.exists(rootPath.resolve(fileName));
+    public boolean exists(String name) {
+        return Files.exists(getPath(name));
+    }
+
+    public boolean isFile(String name) {
+        return Files.isRegularFile(getPath(name));
+    }
+
+    public File getFile(String fileName) {
+        return getPath(fileName).toFile();
     }
 
     public Path getFilePath(String fileName) {
-        return rootPath.resolve(fileName);
+        return getPath(fileName);
     }
 
 }
