@@ -4,13 +4,13 @@ public enum Commands {
 
     HELP("HELP", "Show all commands"),
     LS("LS", "List all files on server"),
-    MKDIR("MKDIR", ""),
-    GET("GET", ""),
-    PUT("PUT", ""),
-    DELETE("DELETE", ""),
-    QUIT("QUIT", ""),
-    BYE("BYE", ""),
-    DISCONNECT("DISCONNECT", ""),
+    MKDIR("MKDIR", "Create a directory on the server"),
+    GET("GET", "Get a file from the server"),
+    PUT("PUT", "Upload a file to the server"),
+    DELETE("DELETE", "Delete a file to the server"),
+    QUIT("QUIT", "Terminate the connection"),
+    BYE("BYE", "Terminate the connection"),
+    DISCONNECT("DISCONNECT", "Terminate the connection"),
     UNKNOWN("UNKNOWN", "");
 
     private final String commandText;
