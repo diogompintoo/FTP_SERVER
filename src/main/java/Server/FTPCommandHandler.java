@@ -14,15 +14,33 @@ public class FTPCommandHandler {
     private final DataInputStream dataIn;
 
 
-
     public FTPCommandHandler(Socket socket) throws IOException {
         this.socket = socket;
         this.fileManager = new FileManager();
+
         this.out = new PrintWriter(socket.getOutputStream(), true);
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
         this.dataOut = new DataOutputStream(socket.getOutputStream());
         this.dataIn = new DataInputStream(socket.getInputStream());
     }
+
+    public void start() throws IOException {
+        out.println("Welcome to FTP server");
+        out.println("Type HELP to see available commands.");
+
+        String line;
+        while ((line = in.readLine()) != null) {
+            String[] command = line.split(" ", 2);
+            Commands cmd = Commands.getCommand(command[0]);
+            String arg = command.length > 1 ? command[1] : null;
+
+            handle(cmd, arg);
+        }
+    }
+
+
+
     public void handle(Commands cmn, String arg) throws IOException {
 
         switch (cmn) {
@@ -46,6 +64,11 @@ public class FTPCommandHandler {
                 uploadFile(arg);
                 break;
 
+            case DELETE:
+                deleteFile(arg);
+                break;
+
+                
         }
     }
 
@@ -122,6 +145,13 @@ public class FTPCommandHandler {
 
         out.println("Uploading :" + fileName);
         }
+    private void deleteFile(String fileName) throws IOException {
     }
+
+
+}
+
+
+
 
 
