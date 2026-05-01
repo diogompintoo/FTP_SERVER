@@ -32,13 +32,17 @@ public class FTPCommandHandler {
         String line;
         while ((line = in.readLine()) != null) {
             String[] command = line.split(" ", 2);
-            Commands cmd = Commands.getCommand(command[0]);
+            Commands cmn = Commands.getCommand(command[0]);
             String arg = command.length > 1 ? command[1] : null;
 
-            handle(cmd, arg);
+            handle(cmn, arg);
+
+            if (turnOff(cmn)){
+                break;
+            }
+
         }
     }
-
 
 
     public void handle(Commands cmn, String arg) throws IOException {
@@ -68,19 +72,22 @@ public class FTPCommandHandler {
                 deleteFile(arg);
                 break;
 
-                
+            case QUIT:
+            case BYE:
+            case DISCONNECT:
+                break;
         }
     }
 
     private void sendHelp(){
         out.println("Commands:");
-        out.println("--->  HELP ()");
-        out.println("--->  LS ()");
-        out.println("--->  MKDIR ()");
-        out.println("--->  GET ()");
-        out.println("--->  PUT ()");
-        out.println("--->  DELETE ()");
-        out.println("--->  QUIT / BYE / DISCONNECT ()");
+        out.println("---->  HELP");
+        out.println("---->  LS");
+        out.println("---->  MKDIR");
+        out.println("---->  GET");
+        out.println("---->  PUT");
+        out.println("---->  DELETE");
+        out.println("---->  QUIT / BYE / DISCONNECT");
     }
 
     private void listFiles(){
@@ -146,9 +153,14 @@ public class FTPCommandHandler {
         out.println("Uploading :" + fileName);
         }
     private void deleteFile(String fileName) throws IOException {
+
     }
 
-
+    private boolean turnOff(Commands cmn){
+        return  cmn == Commands.QUIT ||
+                cmn == Commands.BYE ||
+                cmn == Commands.DISCONNECT;
+    }
 }
 
 
