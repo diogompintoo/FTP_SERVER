@@ -1,25 +1,28 @@
 package Server;
 
-
 import Utility.FileManager;
-
 import java.io.*;
 import java.net.*;
-
 
 public class FTPCommandHandler {
 
     private final  Socket socket;
     private final FileManager fileManager;
     private final PrintWriter out;
+    private final BufferedReader in;
+    private final DataOutputStream dataOut;
+    private final DataInputStream dataIn;
 
 
-    public FTPCommandHandler(Socket socket, PrintWriter out, FileManager fileManager) {
+
+    public FTPCommandHandler(Socket socket) throws IOException {
         this.socket = socket;
         this.fileManager = new FileManager();
-        this.out = out;
+        this.out = new PrintWriter(socket.getOutputStream(), true);
+        this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        this.dataOut = new DataOutputStream(socket.getOutputStream());
+        this.dataIn = new DataInputStream(socket.getInputStream());
     }
-
     public void handle(Commands cmn, String arg) throws IOException {
 
         switch (cmn) {
@@ -82,23 +85,43 @@ public class FTPCommandHandler {
     }
 
     private void downloadFile(String fileName) throws IOException {
-        if (fileName == null || fileName.trim().isEmpty()){
-            out.println("No file name provided.");
+        if (!fileManager.exists(fileName) || !fileManager.isFile(fileName)) {
+            out.println("No file found.");
             return;
         }
-        if (!fileManager.exists(fileName) || !fileManager.isFile(fileName) ){
-            out.println("File " + fileName + " does not exist.");
-        }
-
         File file = fileManager.getFile(fileName);
-            out.println("File" + fileName + "send");
+
+        out.println("Downloading :" + fileName);
+        dataOut.writeLong(file.length());
+
+        FileInputStream fis = fileManager.readFile(fileName);
+        byte[] buffer = new byte[1024];
+        int bytes;
+
+        while ((bytes = fis.read(buffer)) != -1) {
+            dataOut.write(buffer, 0, bytes);
+        }
+        fis.close();
         }
 
     private void uploadFile(String fileName) throws IOException {
-        if (fileName == null || fileName.trim().isEmpty()){
+        long size = dataIn.readLong();
 
+        FileOutputStream fos = new FileOutputStream(fileManager.getFile(fileName));
+
+        byte[] buffer = new byte[1024];
+        int bytesRead;
+        long total = 0;
+
+        while (total < size &&
+                (bytesRead = dataIn.read(buffer)) != -1) {
+            fos.write(buffer, 0, bytesRead);
+            total += bytesRead;
+        }
+        fos.close();
+
+        out.println("Uploading :" + fileName);
         }
     }
 
-    }
 

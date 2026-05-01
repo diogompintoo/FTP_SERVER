@@ -1,7 +1,6 @@
 package Utility;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.*;
 
 
@@ -46,6 +45,7 @@ public class FileManager {
     public File[] listFiles() {
         return rootPath.toFile().listFiles();
     }
+
     public String[] listFileNames() {
         File[] files = listFiles();
 
@@ -73,6 +73,14 @@ public class FileManager {
 
     public Path getFilePath(String fileName) {
         return getPath(fileName);
+    }
+
+    public FileInputStream readFile(String fileName) throws FileNotFoundException {
+        return new FileInputStream(getFile(fileName));
+    }
+
+    public FileOutputStream writeFile(String fileName) throws FileNotFoundException {
+        return new FileOutputStream(getFile(fileName));
     }
 
 }

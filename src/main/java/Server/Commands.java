@@ -29,11 +29,10 @@ public enum Commands {
         return description;
     }
 
+
     public static Commands getCommand(String text) {
-
-
             for (Commands cmn : Commands.values()) {
-                if (cmn.getCommandText().equals(text)) {
+                if (cmn.getCommandText().equalsIgnoreCase(text)) {
                     return cmn;
                 }
             }
