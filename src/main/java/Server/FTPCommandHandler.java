@@ -36,7 +36,11 @@ public class FTPCommandHandler {
                 break;
 
             case GET:
-                sendFile(arg);
+                downloadFile(arg);
+                break;
+
+            case PUT:
+                uploadFile(arg);
                 break;
 
         }
@@ -77,7 +81,7 @@ public class FTPCommandHandler {
         }
     }
 
-    private void sendFile(String fileName) throws IOException {
+    private void downloadFile(String fileName) throws IOException {
         if (fileName == null || fileName.trim().isEmpty()){
             out.println("No file name provided.");
             return;
@@ -89,6 +93,12 @@ public class FTPCommandHandler {
         File file = fileManager.getFile(fileName);
             out.println("File" + fileName + "send");
         }
+
+    private void uploadFile(String fileName) throws IOException {
+        if (fileName == null || fileName.trim().isEmpty()){
+
+        }
+    }
 
     }
 
