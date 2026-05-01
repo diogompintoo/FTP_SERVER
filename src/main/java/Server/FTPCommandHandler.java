@@ -32,16 +32,15 @@ public class FTPCommandHandler {
         String line;
         while ((line = in.readLine()) != null) {
             String[] command = line.split(" ", 2);
-            Commands cmn = Commands.getCommand(command[0]);
+            Commands cmn = Commands.getCommand(command[0].trim());
             String arg = command.length > 1 ? command[1] : null;
 
             handle(cmn, arg);
 
             if (turnOff(cmn)){
-                socket.close();
+                disconnect();
                 break;
             }
-
         }
     }
 
@@ -76,10 +75,11 @@ public class FTPCommandHandler {
             case QUIT:
             case BYE:
             case DISCONNECT:
-                out.println("Client as been disconnected");
                 break;
 
             default:
+                out.println("Unknown command. Type HELP to see available commands.");
+                break;
 
         }
     }
@@ -181,9 +181,14 @@ public class FTPCommandHandler {
                 cmn == Commands.BYE ||
                 cmn == Commands.DISCONNECT;
     }
+
+    private void disconnect() throws IOException {
+        out.println("Disconnecting... See you next time.");
+        out.flush();
+        out.close();
+        System.out.println("Disconnected from FTP server.");
+    }
 }
-
-
 
 
 
