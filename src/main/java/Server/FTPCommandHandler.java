@@ -38,6 +38,7 @@ public class FTPCommandHandler {
             handle(cmn, arg);
 
             if (turnOff(cmn)){
+                socket.close();
                 break;
             }
 
@@ -75,7 +76,11 @@ public class FTPCommandHandler {
             case QUIT:
             case BYE:
             case DISCONNECT:
+                out.println("Client as been disconnected");
                 break;
+
+            default:
+
         }
     }
 
@@ -153,10 +158,25 @@ public class FTPCommandHandler {
         out.println("Uploading :" + fileName);
         }
     private void deleteFile(String fileName) throws IOException {
+       if (fileName == null || fileName.trim().isEmpty()){
+           out.println("No file name provided.");
+           return;
+       }
 
+       if (!fileManager.exists(fileName) || !fileManager.isFile(fileName)) {
+           out.println("No file found.");
+           return;
+       }
+       File file = fileManager.getFile(fileName);
+
+       if (file.delete()) {
+           out.println("Deleted :" + fileName);
+       }else{
+           out.println("Failed to delete :" + fileName);
+       }
     }
 
-    private boolean turnOff(Commands cmn){
+    private boolean turnOff(Commands cmn) throws IOException {
         return  cmn == Commands.QUIT ||
                 cmn == Commands.BYE ||
                 cmn == Commands.DISCONNECT;
