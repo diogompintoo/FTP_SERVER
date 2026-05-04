@@ -86,13 +86,13 @@ public class FTPCommandHandler {
 
     private void sendHelp(){
         out.println("Commands:");
-        out.println("---->  HELP");
-        out.println("---->  LS");
-        out.println("---->  MKDIR");
-        out.println("---->  GET");
-        out.println("---->  PUT");
-        out.println("---->  DELETE");
-        out.println("---->  QUIT / BYE / DISCONNECT");
+        out.println("---->  HELP" + Commands.HELP.getDescription() + ".");
+        out.println("---->  LS" + Commands.LS.getDescription() + ".");
+        out.println("---->  MKDIR" + Commands.MKDIR.getDescription() +".");
+        out.println("---->  GET" + Commands.GET.getDescription() + ".");
+        out.println("---->  PUT" + Commands.PUT.getDescription() + ".");
+        out.println("---->  DELETE" + Commands.DELETE.getDescription() + ".");
+        out.println("---->  QUIT / BYE / DISCONNECT" + Commands.DISCONNECT.getDescription()+ ".");
     }
 
     private void listFiles(){
