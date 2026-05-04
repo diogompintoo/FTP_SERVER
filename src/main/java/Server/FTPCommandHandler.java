@@ -129,6 +129,7 @@ public class FTPCommandHandler {
         out.println("OK");
         out.flush();
         dataOut.writeLong(file.length());
+        dataOut.flush();
 
         FileInputStream fis = fileManager.readFile(fileName);
         byte[] buffer = new byte[1024];
