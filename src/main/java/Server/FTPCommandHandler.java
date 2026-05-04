@@ -126,7 +126,8 @@ public class FTPCommandHandler {
         }
         File file = fileManager.getFile(fileName);
 
-        out.println("Downloading :" + fileName);
+        out.println("OK");
+        out.flush();
         dataOut.writeLong(file.length());
 
         FileInputStream fis = fileManager.readFile(fileName);
@@ -155,7 +156,8 @@ public class FTPCommandHandler {
         }
         fos.close();
 
-        out.println("Uploading :" + fileName);
+        out.println("Upload OK");
+        out.flush();
         }
     private void deleteFile(String fileName) throws IOException {
        if (fileName == null || fileName.trim().isEmpty()){
