@@ -78,7 +78,8 @@ public class FTPCommandHandler {
                 break;
 
             default:
-                out.println("Unknown command. Type HELP to see available commands.");
+                out.println("Unknown command. Type HELP to see available commands" + ".");
+                out.println(".");
                 break;
 
         }
@@ -106,6 +107,7 @@ public class FTPCommandHandler {
                 out.println(fileName);
             }
         }
+        out.println(".");
     }
 
     private void createDir(String dirName){
@@ -127,7 +129,7 @@ public class FTPCommandHandler {
         }
         File file = fileManager.getFile(fileName);
 
-        out.println("OK");
+        out.println("Downloaded file: " + fileName);
         out.flush();
         dataOut.writeLong(file.length());
         dataOut.flush();

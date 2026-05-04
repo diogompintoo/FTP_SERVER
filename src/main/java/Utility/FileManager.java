@@ -71,16 +71,7 @@ public class FileManager {
         return getPath(fileName).toFile();
     }
 
-    public Path getFilePath(String fileName) {
-        return getPath(fileName);
-    }
-
     public FileInputStream readFile(String fileName) throws FileNotFoundException {
         return new FileInputStream(getFile(fileName));
     }
-
-    public FileOutputStream writeFile(String fileName) throws FileNotFoundException {
-        return new FileOutputStream(getFile(fileName));
-    }
-
 }
