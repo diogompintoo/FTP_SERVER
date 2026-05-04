@@ -143,6 +143,9 @@ public class FTPCommandHandler {
         }
 
     private void uploadFile(String fileName) throws IOException {
+
+        out.println("READY");
+        out.flush();
         long size = dataIn.readLong();
 
         FileOutputStream fos = new FileOutputStream(fileManager.getFile(fileName));
