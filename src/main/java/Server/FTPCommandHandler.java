@@ -125,24 +125,30 @@ public class FTPCommandHandler {
     private void downloadFile(String fileName) throws IOException {
         if (!fileManager.exists(fileName) || !fileManager.isFile(fileName)) {
             out.println("No file found.");
+            out.flush();
             return;
         }
         File file = fileManager.getFile(fileName);
 
-        out.println("Downloaded file: " + fileName);
+        out.println("OK");
         out.flush();
+
         dataOut.writeLong(file.length());
         dataOut.flush();
 
-        FileInputStream fis = fileManager.readFile(fileName);
+
+        try (FileInputStream fis = fileManager.readFile(fileName)){
         byte[] buffer = new byte[1024];
         int bytes;
 
         while ((bytes = fis.read(buffer)) != -1) {
             dataOut.write(buffer, 0, bytes);
         }
-        fis.close();
+        dataOut.flush();
         }
+        System.out.println("File sent: " + fileName);
+    }
+
 
     private void uploadFile(String fileName) throws IOException {
 
