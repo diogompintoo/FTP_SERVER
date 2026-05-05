@@ -173,21 +173,38 @@ public class FTPCommandHandler {
         out.flush();
         }
     private void deleteFile(String fileName) throws IOException {
-       if (fileName == null || fileName.trim().isEmpty()){
+
+        if (fileName == null || fileName.trim().isEmpty()){
            out.println("No file name provided.");
+           out.flush();
+           return;
+       }
+       fileName = fileName.trim();
+
+       if (!fileManager.exists(fileName)) {
+           out.println("No file found.");
+           out.flush();
            return;
        }
 
-       if (!fileManager.exists(fileName) || !fileManager.isFile(fileName)) {
-           out.println("No file found.");
-           return;
+       if (!fileManager.isFile(fileName)){
+           out.println("Not a file. Can't delete directories");
+           out.flush();
        }
+
        File file = fileManager.getFile(fileName);
 
-       if (file.delete()) {
-           out.println("Deleted :" + fileName);
-       }else{
-           out.println("Failed to delete :" + fileName);
+       try {
+           if (file.delete()){
+               out.println("Delete: " + fileName);
+               out.flush();
+           }else{
+               out.println("Failed to delete " + fileName);
+               out.flush();
+           }
+       }catch (Exception e){
+           out.println("Failed to delete " + fileName);
+           out.flush();
        }
     }
 
